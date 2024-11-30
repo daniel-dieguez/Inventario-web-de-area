@@ -178,14 +178,22 @@ export default function Inventario() {
   
 
       <h2>Listado de Productos</h2>
-      <ul>
-        {products.map(product => (
-          <li key={product.codigoInventario}>
-            ID: {product.codigoInventario} - Marca: {product.marca} - Tipo: {product.tipoEquipo} - Departamento: {product.departamento} - FechaAsignacion: {product.fechaAsignacion} - fecha ingreso: {product.fechaIngreso}
-            <button onClick={() => deleteProduct(product.codigoInventario)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
+      <ul className={style.productList}>
+  {products.map(product => (
+    <li key={product.codigoInventario} className={style.productItem}>
+      <div className={style.productInfo}>
+        <p><strong>ID:</strong> {product.codigoInventario}</p>
+        <p><strong>Marca:</strong> {product.marca}</p>
+        <p><strong>Tipo:</strong> {product.tipoEquipo}</p>
+        <p><strong>Departamento:</strong> {product.departamento}</p>
+        <p><strong>Fecha Asignación:</strong> {product.fechaAsignacion}</p>
+        <p><strong>Fecha Ingreso:</strong> {product.fechaIngreso}</p>
+      </div>
+      <button className={style.deleteButton} onClick={() => deleteProduct(product.codigoInventario)}>Eliminar</button>
+    </li>
+  ))}
+</ul>
+
     </div>
   )
 }
