@@ -20,7 +20,7 @@ export default function Inventario() {
   // Obtener todos los productos
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:5020/inventario/viewAll');
+      const response = await axios.get('http://localhost:61193/inventario/viewAll');
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products: ", error);
@@ -28,9 +28,10 @@ export default function Inventario() {
   };
 
   // Agregar nuevo producto
-  const addProduct = async () => {
+  const addProduct = async (e) => {
     try {
-      await axios.post('http://localhost:5020/inbentario/newProducto', newProduct);
+      e.preventDefault();
+      await axios.post('http://localhost:61193/inventario/newProducto', newProduct);
       alert("Producto añadido con éxito");
       fetchProducts();
     } catch (error) {
@@ -39,9 +40,10 @@ export default function Inventario() {
   };
 
   // Actualizar producto
-  const updateProduct = async () => {
+  const updateProduct = async (e) => {
     try {
-      await axios.put(`http://localhost:5020/inventario/updateProducto/${updateId}`, newProduct);
+      e.preventDefault();
+      await axios.put(`http://localhost:61193/inventario/updateProducto/${updateId}`, newProduct);
       alert("Producto actualizado con éxito");
       fetchProducts(); // Refresh product list after updating
     } catch (error) {
@@ -52,7 +54,7 @@ export default function Inventario() {
   // Eliminar producto
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:5020/inventario/delete/${id}`);
+      await axios.delete(`http://localhost:61193/inventario/delete/${id}`);
       alert("Producto eliminado con éxito");
       fetchProducts(); // Refresca la lista de productos
     } catch (error) {
@@ -86,7 +88,7 @@ export default function Inventario() {
       <h1>Gestión de Inventario</h1>
 
       <h2>Llenar datos</h2>
-  
+
       <hr />
 
       <div className={style.container}>
@@ -156,15 +158,21 @@ export default function Inventario() {
           />
 
 
-          <button onClick={addProduct} className={style.button}>Agregar Producto</button>
-        
-          <button onClick={updateProduct} className={style.button}>Actualizar Producto</button>
+<button type="submit" onClick={addProduct} className={style.button}>Agregar Producto</button>
+<button type="submit" onClick={updateProduct} className={style.button}>Actualizar Producto</button>
 
-          <input type="text" className={style.label} placeholder="ID del Producto a Actualizar" 
-          value={updateId}
-           
-          onChange={(e) => setUpdateId(e.target.value)} />
-       
+
+          <label htmlFor="updateId" className={style.label}>ID del Producto a Actualizar:</label>
+          <input
+            type="text"
+            id="updateId"
+            name="updateId"
+            placeholder="ID del Producto"
+            value={updateId}
+            onChange={(e) => setUpdateId(e.target.value)}
+            className={style.input}
+          />
+
         </form>
 
       </div>
@@ -175,24 +183,24 @@ export default function Inventario() {
 
       <hr />
 
-  
+
 
       <h2>Listado de Productos</h2>
       <ul className={style.productList}>
-  {products.map(product => (
-    <li key={product.codigoInventario} className={style.productItem}>
-      <div className={style.productInfo}>
-        <p><strong>ID:</strong> {product.codigoInventario}</p>
-        <p><strong>Marca:</strong> {product.marca}</p>
-        <p><strong>Tipo:</strong> {product.tipoEquipo}</p>
-        <p><strong>Departamento:</strong> {product.departamento}</p>
-        <p><strong>Fecha Asignación:</strong> {product.fechaAsignacion}</p>
-        <p><strong>Fecha Ingreso:</strong> {product.fechaIngreso}</p>
-      </div>
-      <button className={style.deleteButton} onClick={() => deleteProduct(product.codigoInventario)}>Eliminar</button>
-    </li>
-  ))}
-</ul>
+        {products.map(product => (
+          <li key={product.codigoInventario} className={style.productItem}>
+            <div className={style.productInfo}>
+              <p><strong>ID:</strong> {product.codigoInventario}</p>
+              <p><strong>Marca:</strong> {product.marca}</p>
+              <p><strong>Tipo:</strong> {product.tipoEquipo}</p>
+              <p><strong>Departamento:</strong> {product.departamento}</p>
+              <p><strong>Fecha Asignación:</strong> {product.fechaAsignacion}</p>
+              <p><strong>Fecha Ingreso:</strong> {product.fechaIngreso}</p>
+            </div>
+            <button className={style.deleteButton} onClick={() => deleteProduct(product.codigoInventario)}>Eliminar</button>
+          </li>
+        ))}
+      </ul>
 
     </div>
   )
